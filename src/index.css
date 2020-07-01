@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Titillium+Web&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /*background: linear-gradient(89deg, #FF5EDF 0%, #04C8DE 100%);*/
+  /*background: linear-gradient(89deg, #3705ac 0%, #a55560 100%);*/
+  background: linear-gradient(89deg, #526dbc  0%, #eb9b8b 100%);
+}
+
+h1, h2, h3, .f1, .f2, .f3 {
+	font-family: 'Titillium Web', sans-serif;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
