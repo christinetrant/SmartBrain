@@ -99,11 +99,38 @@ class App extends Component {
       imageUrl: '',
       faceBox: {},
       // route directs us to different pages - we want signin to be homepage:
-      route: 
-    'signin',
-    isSignedIn: false
+      route: 'signin',
+      isSignedIn: false,
+      // we need a blank user template to create a new user
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
   }
+
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        entries: data.entries,
+        joined: data.joined
+      }
+    })
+  }
+  // Just for testing that the frontend and backend talking to each other!
+  // componentDidMount() {
+  //   fetch('http://localhost:3000')
+  //   .then(response => response.json())
+  //   // .then(data => console.log(data))
+  //   .then(console.log)
+  // }
 
   calculateFaceLocation = (data) => {
     console.log('box', data.outputs[0].data.regions[0].region_info.bounding_box);
@@ -135,7 +162,7 @@ class App extends Component {
     this.setState({input: event.target.value});
   }
 
-  onButtonSubmit = () => {
+  onPictureSubmit = () => {
     // we want to update the image url with the input
     this.setState({imageUrl: this.state.input})
     
@@ -144,7 +171,24 @@ class App extends Component {
       Clarifai.FACE_DETECT_MODEL, 
       this.state.input)
     // calculate the face detection box
-    .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+    .then(response => {
+      if(response) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          header: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            id: this.state.user.id
+          })
+        })
+        .then(response => response.json())
+        .then(count => {
+          this.setState({users: {
+            entries: count
+          }})
+        })
+      }
+      this.displayFaceBox(this.calculateFaceLocation(response))
+    })
     .catch(err => console.log('Uh oh', err)) 
   }
 
@@ -166,34 +210,17 @@ class App extends Component {
         { this.state.route === 'home' ?
           <div>
             <Logo />
-            <Rank />
+            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageInputForm 
-              onButtonSubmit={this.onButtonSubmit} 
+              onPictureSubmit={this.onPictureSubmit} 
               onInputChange={this.onInputChange}
             />
             <FaceRecognition imageUrl={this.state.imageUrl} faceBox={this.state.faceBox}/>
           </div>
         : (this.state.route === 'signin') ?
-          <Signin onRouteChange={this.onRouteChange} /> 
+          <Signin loadUser={this.loadUser } onRouteChange={this.onRouteChange} /> 
           : <Register onRouteChange={this.onRouteChange} />
         }
-      {/*       
-        
-
-        Clarifai.FACE_DETECT_MODEL
-
-        app.models
-.predict(
-Clarifai.COLOR_MODEL,
-    // URL
-    "https://samples.clarifai.com/metro-north.jpg"
-)
-.then(function(response) {
-    // do something with responseconsole.log(response);
-    },
-    function(err) {// there was an error}
-);
-      */}
       </div>
     );
   }

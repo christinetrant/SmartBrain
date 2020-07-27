@@ -2,7 +2,7 @@ import React from 'react';
 import './ImageInputForm.css';
 
 // destructure instead of putting {props} then calling props.onInputChange
-const ImageInputForm = ({ onInputChange, onButtonSubmit }) => {
+const ImageInputForm = ({ onInputChange, onPictureSubmit }) => {
 	return (
 		<div>
 			<p className='f4'>
@@ -14,7 +14,7 @@ const ImageInputForm = ({ onInputChange, onButtonSubmit }) => {
 					onChange={onInputChange}
 					className='f4 pa2 w-70' type='text' />
 					<button 
-					onClick={onButtonSubmit}
+					onClick={onPictureSubmit}
 					className='f4 pa2 w-30 grow link ph3 dib white bg-light-purple'
 					>Detect!</button>
 				</div>
