@@ -175,16 +175,20 @@ class App extends Component {
       if(response) {
         fetch('http://localhost:3000/image', {
           method: 'put',
-          header: {'Content-Type': 'application/json'},
+          headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             id: this.state.user.id
           })
         })
         .then(response => response.json())
         .then(count => {
-          this.setState({users: {
-            entries: count
-          }})
+          // this.setState({
+          //   user: {
+          //     entries: count
+          //   }
+          // })
+          // code above changes entire object whereas we just want to update count of entries so we use object.assign
+          this.setState(Object.assign(this.state.user, {entries: count}))
         })
       }
       this.displayFaceBox(this.calculateFaceLocation(response))
