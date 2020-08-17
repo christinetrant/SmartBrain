@@ -86,7 +86,22 @@ const particles = {
   detectRetina: true
 }
 
- 
+const initialState = {
+  input: '',
+  imageUrl: '',
+  faceBox: {},
+  // route directs us to different pages - we want signin to be homepage:
+  route: 'signin',
+  isSignedIn: false,
+  // we need a blank user template to create a new user
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
 const app = new Clarifai.App({
  apiKey: '72544c4221bd4b4fa43737e8d84bb367'
 });
@@ -198,7 +213,9 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if(route === 'signout') {
-      this.setState({isSignedIn: false})
+      // need to clear user state to start fresh after signout
+      // this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }
