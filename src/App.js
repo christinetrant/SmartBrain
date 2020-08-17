@@ -148,7 +148,7 @@ class App extends Component {
   // }
 
   calculateFaceLocation = (data) => {
-    console.log('box', data.outputs[0].data.regions[0].region_info.bounding_box);
+    // console.log('box', data.outputs[0].data.regions[0].region_info.bounding_box);
     // we save the bounding box results
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     // get the image so we can calculate where to put the box
@@ -156,7 +156,7 @@ class App extends Component {
     // get height and width of image:
     const height = Number(image.height);
     const width = Number(image.width);
-    console.log(height, width)
+    // console.log(height, width)
     // Need to work out from image where to put the box corners:
     return {
       leftCol: clarifaiFace.left_col * width,
@@ -205,6 +205,8 @@ class App extends Component {
           // code above changes entire object whereas we just want to update count of entries so we use object.assign
           this.setState(Object.assign(this.state.user, {entries: count}))
         })
+        // good practice to add a catch for every fetch/then to enable error handling
+        .catch(console.log)
       }
       this.displayFaceBox(this.calculateFaceLocation(response))
     })
@@ -238,9 +240,15 @@ class App extends Component {
             />
             <FaceRecognition imageUrl={this.state.imageUrl} faceBox={this.state.faceBox}/>
           </div>
+          //If route clicked is sign in - go to signin page
         : (this.state.route === 'signin') ?
-          <Signin loadUser={ this.loadUser } onRouteChange={this.onRouteChange} /> 
-          : <Register loadUser={ this.loadUser } onRouteChange={this.onRouteChange} />
+            <Signin loadUser={ this.loadUser } onRouteChange={this.onRouteChange} /> 
+          //If route clicked is sign out - go to back to sign in page
+          : (this.state.route === 'signout') ?
+            <Signin loadUser={ this.loadUser } onRouteChange={this.onRouteChange} /> 
+            :
+          // otherwise go to register page
+            <Register loadUser={ this.loadUser } onRouteChange={this.onRouteChange} />
         }
       </div>
     );
