@@ -8,7 +8,7 @@ import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import 'tachyons';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
+// import Clarifai from 'clarifai';
 import './App.css';
 
 const particles = {
@@ -102,9 +102,9 @@ const initialState = {
     joined: ''
   }
 }
-const app = new Clarifai.App({
- apiKey: '72544c4221bd4b4fa43737e8d84bb367'
-});
+// const app = new Clarifai.App({
+//  apiKey: '72544c4221bd4b4fa43737e8d84bb367'
+// });
 
 class App extends Component {
   constructor() {
@@ -181,10 +181,19 @@ class App extends Component {
     // we want to update the image url with the input
     this.setState({imageUrl: this.state.input})
     
-    app.models
-    .predict(
-      Clarifai.FACE_DETECT_MODEL, 
-      this.state.input)
+    // app.models
+    // .predict(
+    //   Clarifai.FACE_DETECT_MODEL, 
+    //   this.state.input)
+    fetch('http://localhost:3000/imageUrl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+    .then(response => response.json())
+    
     // calculate the face detection box
     .then(response => {
       if(response) {
@@ -246,9 +255,8 @@ class App extends Component {
           //If route clicked is sign out - go to back to sign in page
           : (this.state.route === 'signout') ?
             <Signin loadUser={ this.loadUser } onRouteChange={this.onRouteChange} /> 
-            :
-          // otherwise go to register page
-            <Register loadUser={ this.loadUser } onRouteChange={this.onRouteChange} />
+            // otherwise go to register page
+            : <Register loadUser={ this.loadUser } onRouteChange={this.onRouteChange} />
         }
       </div>
     );
