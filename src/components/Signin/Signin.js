@@ -70,6 +70,7 @@ class Signin extends React.Component {
           this.props.onRouteChange('home');
         }
       })
+      .catch(err => console.log('can\'t sign in!'))
 		// console.log(this.state)
 	}
 
