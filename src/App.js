@@ -168,7 +168,7 @@ class App extends Component {
   // then we want to show the box calculated above to do this we wrap the above function in this function below in button submit function:
   displayFaceBox = (box) => {
     this.setState({faceBox: box})
-    console.log('box', box)
+    // console.log('box', box)
   }
 
   onInputChange = (event) => {
