@@ -185,7 +185,7 @@ class App extends Component {
     // .predict(
     //   Clarifai.FACE_DETECT_MODEL, 
     //   this.state.input)
-    fetch('http://localhost:3000/imageUrl', {
+    fetch('https://aqueous-peak-18114.herokuapp.com/imageUrl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -197,7 +197,7 @@ class App extends Component {
     // calculate the face detection box
     .then(response => {
       if(response) {
-        fetch('http://localhost:3000/image', {
+        fetch('https://aqueous-peak-18114.herokuapp.com/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
